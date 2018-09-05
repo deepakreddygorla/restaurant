@@ -1,0 +1,81 @@
+
+=======Refelection==========
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Reflection;
+
+namespace ConsolAppTest
+{
+    class ReflectionClass
+    {
+        public static void Main()
+        {
+            Customer C = new Customer(101, "Venu");
+            C.PrintId();
+            C.PrintName();
+
+            Console.WriteLine(" ");
+
+            //Type T = Type.GetType("ConsolAppTest.Customer");              //Type Present in System Namespace
+            //Type T = typeof(Customer);
+
+            Customer C1 = new Customer(101, "Venu");
+            Type T=C1.GetType();                         //All Objects have GetType() which inhats from Base System.Object Class
+
+            PropertyInfo[] Pro = T.GetProperties();                       //PropertyInfo[] Present in System.Refelection Namespace
+            foreach(PropertyInfo Pr in Pro)
+            {
+                Console.WriteLine(Pr.PropertyType.Name + " " + Pr.Name);
+            }
+
+            Console.WriteLine(" ");
+
+            MethodInfo[] Met = T.GetMethods();
+            foreach (MethodInfo Me in Met)
+            {
+                Console.WriteLine(Me.ReturnType.Name + " " + Me.Name);
+            }
+
+            Console.WriteLine(" ");
+
+            ConstructorInfo[] Con = T.GetConstructors();
+            foreach (ConstructorInfo Co in Con)
+            {
+                Console.WriteLine(Co.ToString() + " " + Co.Name);
+            }
+
+            Console.Read();
+        }
+    }
+
+    class Customer
+    {
+        public int Ide { get; set; }
+        public string Namee { get; set; }
+
+        public Customer()
+        {
+            this.Ide = -1;
+            this.Namee = String.Empty;
+        }
+
+        public Customer(int id,String name)
+        {
+            this.Ide = id;
+            this.Namee = name;
+        }
+
+        public void PrintId()
+        {
+            Console.WriteLine("Id = {0}",this.Ide);
+        }
+
+        public void PrintName()
+        {
+            Console.WriteLine("Name = {0}", this.Namee);
+        }
+    }
+}

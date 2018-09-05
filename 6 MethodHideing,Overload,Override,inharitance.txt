@@ -1,0 +1,424 @@
+Inharitance::
+============
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace SampleConsoleApplication
+{
+    class InharitanceClass
+    {
+        public static void Main67()
+        {
+            FullTimeEmployee f = new FullTimeEmployee();
+            //f.FirstName = "Venu";
+            //f.LastName = "Kiran";
+            f.Email = "VenuKiran0203@gmail.com";
+            f.YearlySalary = 500000;
+            f.PrintFullName();
+            Console.ReadLine();
+           
+        }
+    }
+    public class Employee
+    {
+        public string FirstName;
+        public string LastName;
+        public string MiddleName;
+        public string Email;
+
+        public Employee()
+        {
+            FirstName = "Venu";
+            LastName = "Kiran";
+        }
+
+        public Employee(String Message)
+        {
+            Console.WriteLine(Message);
+        }
+
+        public Employee(String FName, String LName)
+        {
+            FirstName = FName;
+            LastName = LName;
+        }
+
+        public Employee(String FName, String MName, String LName)
+        {
+            FirstName = FName;
+            MiddleName = MName;
+            LastName = LName;
+        }
+        public void PrintFullName()
+        {
+            Console.WriteLine(FirstName + " " + LastName);
+        }
+
+        public void PrintFullName(String FirstName, String LastName)
+        {
+            Console.WriteLine(FirstName + " " + LastName);
+        }
+
+        public void PrintFullName(String FirstName, string MiddleName, String LastName)
+        {
+            Console.WriteLine(FirstName + " " + MiddleName + " " + LastName);
+        }
+
+    }
+    public class FullTimeEmployee : Employee
+    {
+        public float YearlySalary;
+        public FullTimeEmployee() : base("xty","hju")
+        {
+            Console.WriteLine("I am FullTime Employee");
+        }
+       
+    }
+
+    public class PartTimeEmployee : Employee
+    {
+       public float HourlySalary;
+
+        //public PartTimeEmployee() : base("Hai","Venu")
+        //{
+        //    Console.WriteLine("I am PartTime Employee");
+        //}
+    }
+
+    
+}
+
+
+Method Hideing::
+===============
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace SampleConsoleApplication
+{
+    class MethodHideingClass
+    {
+        public static void Main76()
+        {
+            FullTimeEmployee1 Ft = new FullTimeEmployee1();
+            //Employee Ft = new FullTimeEmployee1();
+            Ft.FirstName = "FullTime";
+            Ft.LastName = "Employee";
+            Ft.PrintFullName();
+
+            //PartTimeEmployee1 Pt = new PartTimeEmployee1();
+            Employee Pt = new PartTimeEmployee1();
+            //PartTimeEmployee1 Pt = new Employee();  // It Is Not Possible Ex: Mobiles of different modeles 
+            Pt.FirstName = "PartTime";
+            Pt.LastName = "Employee";
+            Pt.PrintFullName();
+            //((Employee)Pt).PrintFullName();
+
+            Console.ReadLine();
+        }
+        
+    }
+
+    public class Employees
+    {
+        public string FirstName;
+        public string LastName;
+
+        public void PrintFullName()
+        {
+            Console.WriteLine(FirstName+" "+LastName);
+        }
+    }
+
+    public class FullTimeEmployee1 :Employee
+    {
+        public new  void PrintFullName()
+        {
+            // base.PrintFullName();
+            Console.WriteLine(FirstName + " " + LastName + " ..");
+        }
+    }
+
+    public class PartTimeEmployee1:Employee
+    {
+        public new void PrintFullName()
+        {
+              // base.PrintFullName();
+            Console.WriteLine(FirstName + " " + LastName + " **");
+        }
+        
+    }
+
+}
+
+
+Overrideing::
+=============
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace SampleConsoleApplication
+{
+    class MethodHideingClass
+    {
+        public static void Main76()
+        {
+            FullTimeEmployee1 Ft = new FullTimeEmployee1();
+            //Employee Ft = new FullTimeEmployee1();
+            Ft.FirstName = "FullTime";
+            Ft.LastName = "Employee";
+            Ft.PrintFullName();
+
+            //PartTimeEmployee1 Pt = new PartTimeEmployee1();
+            Employee Pt = new PartTimeEmployee1();
+            //PartTimeEmployee1 Pt = new Employee();  // It Is Not Possible Ex: Mobiles of different modeles 
+            Pt.FirstName = "PartTime";
+            Pt.LastName = "Employee";
+            Pt.PrintFullName();
+            //((Employee)Pt).PrintFullName();
+
+            Console.ReadLine();
+        }
+        
+    }
+
+    public class Employees
+    {
+        public string FirstName;
+        public string LastName;
+
+        public virtual void PrintFullName()
+        {
+            Console.WriteLine(FirstName+" "+LastName);
+        }
+    }
+
+    public class FullTimeEmployee1 :Employee
+    {
+        public override  void PrintFullName()
+        {
+            // base.PrintFullName();
+            Console.WriteLine(FirstName + " " + LastName + " ..");
+        }
+    }
+
+    public class PartTimeEmployee1:Employee
+    {
+        public override void PrintFullName()
+        {
+              // base.PrintFullName();
+            Console.WriteLine(FirstName + " " + LastName + " **");
+        }
+        
+    }
+
+}
+
+
+
+
+
+Polymorfism::
+
+   Polymorfism enables us to invoking derived class methods using base call reference variable at runtime.
+
+Method Hideing:: 
+use  New Key Word at dervived class method
+
+Method Overrideing::
+ Use Virtual Key Word at base class and Override Key Word at derived class
+
+
+
+
+Encap::
+========
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace SampleConsoleApplication
+{
+    class EncapClass
+    {
+        private int id;
+        private string name;
+        private int marks = 35;
+        public string City { get; set; }
+        public string Email { get; set; }
+
+        public int Id
+        {
+            set
+            {
+                if (value <= 0)
+                {
+                    throw new Exception("Id Must not be -ve or zero");
+                }
+                this.id = value;
+            }
+            get 
+            {
+                    return this.id;
+            }
+        }
+
+        public String Name
+        {
+            set 
+            {
+                if(string.IsNullOrEmpty(value))
+                {
+                    throw new Exception("Name must not be empty");
+                }
+                this.name = value;
+            }
+            get
+            {
+                if (string.IsNullOrEmpty(name))
+                {
+                    throw new Exception("No Name");
+                }
+                return this.name;
+            }
+        }
+
+        public int Marks
+        {
+            get
+            {
+               return this.marks;
+            }
+        }
+
+        public static void Main()
+        {
+            EncapClass Ec = new EncapClass();
+            Ec.Id = 22;
+            Ec.Name = "Mark";
+            //Ec.Marks = 25;
+
+            Console.WriteLine(Ec.Id);
+            Console.WriteLine(Ec.Name);
+            Console.WriteLine(Ec.Marks);
+            Console.ReadLine();
+        }
+    }
+
+}
+
+
+
+
+
+Absstracion::
+===========
+Abstraction.CS
+----------------------
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace SampleTestConsoleApplication
+{
+    public abstract class Abstraction
+    {
+        public string FirstName="";
+        
+        public String LastName="";
+        
+        
+
+        public void PrintFullName()
+        {
+            Console.WriteLine(FirstName+LastName);
+        }
+
+        public abstract void GetMonthlySalary();
+    } 
+}
+
+
+FullTime::
+---------------
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace SampleTestConsoleApplication
+{
+    public class FullTimeEmp : Abstraction
+    {
+        public int AnualSalary;
+        public override void GetMonthlySalary()
+        {
+            Console.WriteLine(AnualSalary / 12);
+        }
+    }
+}
+
+PartTime
+-------------
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace SampleTestConsoleApplication
+{
+    public class PartTimeEmp :Abstraction
+    {
+        public int HourlyPay;
+        public int WorkingHours;
+        public override void GetMonthlySalary()
+        {
+            Console.WriteLine(HourlyPay * WorkingHours);
+        }
+    }
+}
+
+
+MainClass:
+-----------------
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace SampleTestConsoleApplication
+{
+    class MainClass
+    {
+        public static void Main()
+        {
+           // Abstraction A = new Abstraction();
+
+            FullTimeEmp F = new FullTimeEmp();
+            F.FirstName = "XX";
+            F.LastName = "YY";
+            F.AnualSalary = 50000;
+            F.PrintFullName();
+            F.GetMonthlySalary();
+
+            PartTimeEmp P = new PartTimeEmp();
+            P.FirstName = "AA";
+            P.LastName = "BB"; 
+            P.WorkingHours = 200;
+            P.HourlyPay = 50;
+            P.PrintFullName();
+            P.GetMonthlySalary();
+
+            Console.ReadLine();
+        }
+    }
+}

@@ -1,0 +1,103 @@
+==========Basic Program ===========
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace ConsolAppTest
+{
+
+    public delegate void delegateMessage(string Message);
+     public class DelegateClass
+    {
+         public static void Main234()
+         {
+             delegateMessage DM = new delegateMessage(PrintMessage);
+             DM("Hello Venu !");
+             Console.Read();
+         }
+
+        public static void PrintMessage(string StrMessage)
+        {
+            Console.WriteLine(StrMessage);
+        }
+    }
+}
+
+
+
+
+===========Function As Parameter============
+
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.IO;
+
+namespace ConsolAppTest
+{
+    class PraEmployee
+    {
+        public static void Main456()
+        {
+            List<DelegateClassPoint> EList = new List<DelegateClassPoint>();
+            EList.Add(new DelegateClassPoint{Idr=101,Namer="sai",Salarir=25000,Experancer=2} );
+            EList.Add(new DelegateClassPoint { Idr = 101, Namer = "Venu", Salarir = 45000, Experancer = 5 });
+            EList.Add(new DelegateClassPoint { Idr = 102, Namer = "Kiran", Salarir = 40000, Experancer = 7 });
+            EList.Add(new DelegateClassPoint { Idr = 103, Namer = "Kumar", Salarir = 35000, Experancer = 3 });
+
+            IsPramoted isPramoted = new IsPramoted(GrantPramotion);
+
+            DelegateClassPoint.PramoteEmployee(EList,isPramoted);
+
+            //foreach (DelegateClassPoint emp in EList)
+            //{
+            //    if (emp.Experancer >= 5)
+            //    {
+            //        Console.WriteLine("{0}  Pramoted", emp.Namer);
+            //    }
+            //}
+
+
+
+            Console.Read();
+        }
+
+        public static bool GrantPramotion(DelegateClassPoint SEmp)
+        {
+            if(SEmp.Experancer>=5)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+    }
+
+     delegate bool IsPramoted(DelegateClassPoint Pramotionss);
+
+
+    class DelegateClassPoint
+    {
+        public int Idr { get; set; }
+        public string Namer { get; set; }
+        public int Salarir { get; set; }
+        public int Experancer { get; set; }
+
+        public static void PramoteEmployee(List<DelegateClassPoint> EmpList, IsPramoted PramotionGiven)
+        {
+            foreach (DelegateClassPoint emp in EmpList)
+            {
+                if (PramotionGiven(emp))
+                {
+                    Console.WriteLine("{0}  Pramoted", emp.Namer);
+                }
+            }
+        }
+    }
+}

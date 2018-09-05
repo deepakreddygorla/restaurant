@@ -1,0 +1,113 @@
+====Serialize And De-Serialize===========
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Xml.Serialization;
+using System.IO;
+using Newtonsoft.Json;
+
+namespace ConsolAppTest
+{
+    class SerializAndDeserilize
+    {
+        IList<EmployeDetails> emp = new List<EmployeDetails>()
+            {
+                new EmployeDetails()
+                {
+                    EId=101,
+                    EName="Venu",
+                    EAge=25
+                },
+                new EmployeDetails()
+                {
+                    EId=102,
+                    EName="Kiran",
+                    EAge=30
+                },
+                new EmployeDetails()
+                {
+                    EId=103,
+                    EName="Kumar",
+                    EAge=35
+                },
+            };
+        public void XmlSerilize()
+        {
+            
+
+
+            foreach (EmployeDetails Details in emp)
+            {
+                new XmlSerializer(typeof(EmployeDetails)).Serialize(Console.Out, Details);
+            }
+
+
+
+
+            try
+            {
+
+                XmlSerializer serialiser = new XmlSerializer(typeof(List<EmployeDetails>));
+                StreamWriter Sr = new StreamWriter("EmpList.xml");
+
+                serialiser.Serialize(Sr, emp);
+
+                Sr.Close();
+            }
+            catch
+            {
+
+            }
+
+            try
+            {
+                XmlSerializer serializer = new XmlSerializer(typeof(List<EmployeDetails>));
+
+                StreamReader reader = new StreamReader("EmpList.xml");
+                List<EmployeDetails> Det = (List<EmployeDetails>)serializer.Deserialize(reader);
+
+                foreach (EmployeDetails Details in Det)
+                {
+                    Console.WriteLine("");
+                    Console.WriteLine(Details.EId);
+                    Console.WriteLine(Details.EName);
+                    Console.WriteLine(Details.EAge);
+                    Console.WriteLine("================");
+                }
+            }
+            catch
+            {
+
+            }
+
+            
+        }
+
+        public void JSonSerilze()
+        {
+            Console.WriteLine("Serializeing the List Collection");             //Serializeing the List Collection
+
+            string CollectionResult = JsonConvert.SerializeObject(emp);
+            Console.WriteLine(CollectionResult);
+
+            Console.WriteLine("");
+            Console.WriteLine("DeSerializeing the List Collection");            //DeSerializeing the List Collection
+                
+            List<EmployeDetails> Ts= JsonConvert.DeserializeObject<List<EmployeDetails>>(CollectionResult);
+            
+            foreach(EmployeDetails TT in Ts)
+            {
+                Console.WriteLine("Id = {0} , Name ={1} , Age = {2}",TT.EId,TT.EName,TT.EAge);
+            }
+        }
+    }
+
+    public class EmployeDetails
+    {
+        public int EId { get; set; }
+        public string EName { get; set; }
+        public int EAge { get; set; }
+    }
+}

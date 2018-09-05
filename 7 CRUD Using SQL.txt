@@ -1,0 +1,364 @@
+======CRUD Operations In Web Applications Using GridView===========
+
+
+Html ::  WebForm.aspx
+====================
+
+<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="CRUDXML.aspx.cs" Inherits="ElectronicsForYou.CRUDXML" %>
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <title></title>
+</head>
+<body>
+    <form id="form1" runat="server">
+    <div>
+    <table style="text-align:center">
+        <tr>
+            <td>
+                <asp:Label ID="LblId" runat="server" Text="Id"></asp:Label>
+            </td>
+            <td>
+                <asp:TextBox ID="TxtId" runat="server"></asp:TextBox>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <asp:Label ID="LblName" runat="server" Text="Name"></asp:Label>
+            </td>
+            <td>
+                <asp:TextBox ID="TxtName" runat="server"></asp:TextBox>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <asp:Label ID="LblGender" runat="server" Text="Gender"></asp:Label>
+            </td>
+            <td>
+                <asp:TextBox ID="TxtGender" runat="server"></asp:TextBox>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <asp:Button ID="AddEmployee" runat="server" Text="Add Employee" OnClick="AddEmployee_Click" />
+            </td>
+            <td>
+                <asp:Button ID="Clear" runat="server" Text="Clear" />
+            </td>
+        </tr>
+    </table>
+        <div>
+            <br />
+            <br />
+            <br />
+            <br />
+            <asp:GridView ID="GridviewXML" runat="server"></asp:GridView>
+        </div>
+    </div>
+        <div>
+            <asp:GridView ID="GridView1" runat="server" BackColor="#DEBA84" BorderColor="#DEBA84" BorderStyle="None" BorderWidth="1px" CellPadding="3" CellSpacing="2" ShowFooter="True" AutoGenerateColumns="False" OnRowCommand="GridView1_RowCommand" >
+
+            <Columns>
+                <asp:TemplateField>
+                    <ItemTemplate>
+                        <asp:LinkButton ID="LinkButton1" CommandArgument='<%# Eval("Id") %>' CommandName="EditRow" runat="server">Edit</asp:LinkButton>
+                        <asp:LinkButton ID="LinkButton2" CommandArgument='<%# Eval("Id") %>' CommandName="DeleteRow" runat="server">Delete</asp:LinkButton>
+                    </ItemTemplate>
+                    <EditItemTemplate>
+                        <asp:LinkButton ID="LinkButton3" CommandArgument='<%# Eval("Id") %>' CommandName="UpdateRow" runat="server">Update</asp:LinkButton>
+                        <asp:LinkButton ID="LinkButton4" CommandArgument='<%# Eval("Id") %>' CommandName="CancelRow" runat="server">Cancele</asp:LinkButton>
+                    </EditItemTemplate>
+                </asp:TemplateField>
+                <asp:TemplateField HeaderText="Id" InsertVisible="False" SortExpression="CId">
+                    <EditItemTemplate>
+                        <asp:Label ID="Label1" runat="server" Text='<%# Eval("Id") %>'></asp:Label>
+                    </EditItemTemplate>
+                    <ItemTemplate>
+                        <asp:Label ID="Label1" runat="server" Text='<%# Eval("Id") %>'></asp:Label>
+                    </ItemTemplate>
+                    
+                </asp:TemplateField>
+                <asp:TemplateField HeaderText="Name" SortExpression="Name">
+                    <EditItemTemplate>
+                        <asp:TextBox ID="TextName" runat="server" Text='<%# Bind("Name") %>'></asp:TextBox>
+                        <asp:RequiredFieldValidator ID="RequiredEdit" ControlToValidate="TextName" runat="server" ErrorMessage="User Name Is Required">*</asp:RequiredFieldValidator>
+                    </EditItemTemplate>
+                    <ItemTemplate>
+                        <asp:Label ID="Label3" runat="server" Text='<%# Bind("Name") %>'></asp:Label>
+                    </ItemTemplate>
+                   
+                </asp:TemplateField>
+                 <asp:TemplateField HeaderText="Gender" SortExpression="Gender">
+                    <EditItemTemplate>
+                        <asp:TextBox ID="TextGender" runat="server" Text='<%# Bind("Gender") %>'></asp:TextBox>
+                        <asp:RequiredFieldValidator ID="RequiredEdit1" ControlToValidate="TextGender" runat="server" ErrorMessage="Gender Name Is Required">*</asp:RequiredFieldValidator>
+                    </EditItemTemplate>
+                    <ItemTemplate>
+                        <asp:Label ID="Label4" runat="server" Text='<%# Bind("Gender") %>'></asp:Label>
+                    </ItemTemplate>
+                   
+                </asp:TemplateField>
+            </Columns>
+
+
+            <FooterStyle BackColor="#F7DFB5" ForeColor="#8C4510" />
+            <HeaderStyle BackColor="#A55129" Font-Bold="True" ForeColor="White" />
+            <PagerStyle ForeColor="#8C4510" HorizontalAlign="Center" />
+            <RowStyle BackColor="#FFF7E7" ForeColor="#8C4510" />
+            <SelectedRowStyle BackColor="#738A9C" Font-Bold="True" ForeColor="White" />
+            <SortedAscendingCellStyle BackColor="#FFF1D4" />
+            <SortedAscendingHeaderStyle BackColor="#B95C30" />
+            <SortedDescendingCellStyle BackColor="#F1E5CE" />
+            <SortedDescendingHeaderStyle BackColor="#93451F" />
+        </asp:GridView>
+        <asp:ValidationSummary ID="ValidationSummary1" runat="server" ValidationGroup="Insert"/>
+        <asp:ValidationSummary ID="ValidationSummary2" runat="server" />
+        <asp:Label ID="ErLabel" runat="server"></asp:Label>
+    </div>
+    </form>
+</body>
+</html>
+
+
+
+WebForm.aspx.cs
+================
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using System.Data;
+using System.Data.SqlClient;
+using System.Configuration;
+using ElectronicsForYou.EBusinessLayer;
+
+namespace ElectronicsForYou
+{
+    public partial class TestWebForm : System.Web.UI.Page
+    {
+        protected void Page_Load(object sender, EventArgs e)
+        {
+            if(!IsPostBack)
+            {
+                GetGridData();
+            }
+        }
+        //protected void LBInsert_Click(object sender, EventArgs e)                  // Using SQLData Source
+        //{
+        //    SqlDataSource1.InsertParameters["CName"].DefaultValue = ((TextBox)GridView1.FooterRow.FindControl("TextBox2")).Text;
+
+        //    SqlDataSource1.Insert();
+        //}
+
+        public void GetGridData()
+        {
+            EBusiness J = new EBusiness();
+            GridView1.DataSource= J.GetCategory();
+            GridView1.DataBind();
+        }
+
+        protected void GridView1_RowCommand(object sender, GridViewCommandEventArgs e)
+        {
+            if (e.CommandName == "EditRow")
+            {
+                int rowindex = ((GridViewRow)((LinkButton)e.CommandSource).NamingContainer).RowIndex;
+                GridView1.EditIndex = rowindex;
+                GetGridData();
+            }
+
+            if (e.CommandName == "DeleteRow")
+            {
+                EBusiness.DeleteCategory(Convert.ToInt32(e.CommandArgument));
+                GetGridData();
+            }
+
+            if (e.CommandName == "CancelRow")
+            {
+                GridView1.EditIndex = -1;
+                GetGridData();
+            }
+
+            if (e.CommandName == "UpdateRow")
+            {
+                int rowindex = ((GridViewRow)((LinkButton)e.CommandSource).NamingContainer).RowIndex;
+
+                int CtId = Convert.ToInt32(e.CommandArgument);
+                String CtName = ((TextBox)GridView1.Rows[rowindex].FindControl("TextBox1")).Text;
+
+                EBusiness.UpdateCategory(CtId,CtName);
+
+                GridView1.EditIndex = -1;
+                GetGridData();
+            }
+            if (e.CommandName == "IncertRow")
+            {
+
+                String CtNameAdd = ((TextBox)GridView1.FooterRow.FindControl("TextBox2")).Text;
+
+                EBusiness I = new EBusiness();
+
+                int returnvalue = I.AddCategory(CtNameAdd);
+                if (returnvalue == 1)
+                {
+                    
+                    ErLabel.Text = "Your Product Add Sucessfully";
+                    ((TextBox)GridView1.FooterRow.FindControl("TextBox2")).Text = string.Empty;
+
+                }
+                else
+                {
+                    ErLabel.Text = "Product Already Exist Please Choose Another";
+                }
+
+                GetGridData();
+            }
+        }
+    }
+}
+
+
+Web.Config
+==========
+<?xml version="1.0"?>
+
+<configuration>
+    <system.web>
+      <compilation debug="true" targetFramework="4.0" />
+    
+    </system.web>
+  <connectionStrings>
+    <add name="ABCD" connectionString="server=.;database=Electronics;Integrated Security=SSPI"
+      providerName="System.Data.SqlClient" />
+  </connectionStrings>
+</configuration>
+
+
+Business.Cs
+===========
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Data;
+using System.Configuration;
+using System.Data.SqlClient;
+using ElectronicsForYou.EDataContexLayer;
+
+namespace ElectronicsForYou.EBusinessLayer
+{
+    public class EBusiness
+    {
+       
+        public static int categoryid;
+        public string categoryname;
+
+
+        public DataTable GetCategory()
+        {
+            SqlParameter[] GS = new SqlParameter[0];
+            DataTable DB = EDataContext.ExStoreprocedureData("Sp_GetCategoryDetais", GS);
+
+            return DB;
+        }
+
+    }
+}
+
+
+DataContext.Cs
+==============
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Data;
+using System.Configuration;
+using System.Data.SqlClient;
+
+namespace ElectronicsForYou.EDataContexLayer
+{
+    public class EDataContext
+    {
+        static String Connection = ConfigurationManager.ConnectionStrings["ABCD"].ConnectionString;
+
+        public static SqlParameter GetParameters(String parameterName,Object value,SqlDbType Dbtype,int size)
+        {
+            SqlParameter Param = new SqlParameter();
+            Param.ParameterName = parameterName;
+            Param.Value = value;
+            Param.SqlDbType = Dbtype;
+            Param.Size = size;
+            Param.Direction = ParameterDirection.Input;
+            return Param;
+        }
+
+        public static DataTable ExStoreprocedureData(string ProcedureName,SqlParameter[] ParamValue)
+        {
+            SqlConnection con = new SqlConnection(Connection);
+            SqlCommand cmd = new SqlCommand(ProcedureName,con);
+            cmd.Parameters.AddRange(ParamValue);
+            cmd.CommandType = CommandType.StoredProcedure;
+
+            SqlDataAdapter SDA = new SqlDataAdapter(cmd);
+            DataTable Dt = new DataTable();
+            try
+            {
+                SDA.Fill(Dt);
+            }
+            catch(Exception Ex)
+            {
+               //throw new NotImplementedException();
+            }
+            finally
+            {
+                SDA.Dispose();
+                cmd.Parameters.Clear();
+                cmd.Dispose();
+                con.Dispose();
+            }
+            return Dt;
+        }
+
+        public static int ExScalarProcedure(string ProcedureNameScalar, SqlParameter[] ParamValueScalar)
+        {
+            SqlConnection con = new SqlConnection(Connection);
+            SqlCommand cmd = new SqlCommand(ProcedureNameScalar, con);
+            cmd.Parameters.AddRange(ParamValueScalar);
+            cmd.CommandType = CommandType.StoredProcedure;
+            con.Open();
+            int ReturnCount = (int)cmd.ExecuteScalar();
+
+            return ReturnCount;
+        }
+
+        public static void EXNonProcedure(string ProcedureNameScalar, SqlParameter[] ParamValueScalar)
+        {
+            SqlConnection con = new SqlConnection(Connection);
+            SqlCommand cmd = new SqlCommand(ProcedureNameScalar, con);
+            cmd.Parameters.AddRange(ParamValueScalar);
+            cmd.CommandType = CommandType.StoredProcedure;
+            con.Open();
+            cmd.ExecuteNonQuery();
+        }
+    }
+}
+
+
+
+SQl DataBase Table
+=================
+
+Create table Catigory(CId int Identity(1,1) primary key,CName Varchar(100))
+
+
+
+
+Alter Proc Sp_GetCategoryDetais     //StoredProcedure
+as
+begin
+Select * from Catigory
+end
