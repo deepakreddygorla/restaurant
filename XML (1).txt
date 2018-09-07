@@ -1,0 +1,313 @@
+XML.ASPX
+-----------------
+
+<div>
+        <table cellpadding="2" cellspacing="2" border="1" width="70%" align="center">
+      <tr>               
+         <td>
+                    <asp:ListView ID="EmployeeListView" runat="server" InsertItemPosition="LastItem"
+                        OnItemInserting="EmployeeListView_ItemInserting" OnItemDeleting="EmployeeListView_ItemDeleting"
+                        OnItemEditing="EmployeeListView_ItemEditing" OnItemCanceling="EmployeeListView_ItemCanceling">
+                        <LayoutTemplate>
+                            <table id="Table1" runat="server" width="100%">
+                                <tr id="Tr1" runat="server">
+                                    <td id="Td1" runat="server">
+                                        <table id="itemPlaceholderContainer" runat="server" border="0" style="" width="100%">
+                                            <tr id="Tr2" runat="server" style="background-color: GrayText;">
+                                              <th id="Th2" runat="server" align="center" style="color: White;">
+                                                    Name
+                                                </th>
+                                                <th id="Th3" runat="server" align="center" style="color: White;">
+                                                    Mobile
+                                                </th>
+                                                <th id="Th4" runat="server" align="center" style="color: White;">
+                                                    City
+                                                </th>
+                                                <th id="Th5" runat="server" align="center" style="color: White;">
+                                                    Country
+                                                </th>
+                                                <th id="Th1" runat="server" align="center" style="color: White;">
+                                                </th>
+                                            </tr>
+                                            <tr id="itemPlaceholder" runat="server" style="color: White;">
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr id="Tr3" runat="server">
+                                    <td id="Td2" runat="server" style="">
+                                    </td>
+                                </tr>
+                            </table>
+                        </LayoutTemplate>
+                        <ItemTemplate>
+                            <tr style="background-color: #95B9C7;">
+                                <td align="center">
+                                    <asp:Label ID="lblName" runat="server" Text='<%# Bind("Name") %>' />
+                                </td>
+                                <td align="center">
+                                    <asp:Label ID="lblMobile" runat="server" Text='<%# Bind("Mobile") %>' />
+                                </td>
+                                <td align="center">
+                                    <asp:Label ID="lblCity" runat="server" Text='<%# Bind("City") %>' />
+                                </td>
+                                <td align="center">
+                                    <asp:Label ID="lblCountry" runat="server" Text='<%# Bind("Country") %>' />
+                                </td>
+                                <td align="center">
+                                    <asp:Button  ID="DeleteButton" runat="server" CommandName="Delete" Text="Delete"/>
+                                    <%--<asp:ImageButton ID="DeleteButton" runat="server" CommandName="Delete" ImageUrl="~/Image/download.jpg"
+                                        Width="75px" />--%>
+                                    <asp:Button ID="EditButton" runat="server" CommandName="Edit" Text="Edit"/>
+                                    <%--<asp:ImageButton ID="EditButton" runat="server" CommandName="Edit" ImageUrl="~/Image/edit-icon.png"
+                                        Height="70px" />--%>
+                                </td>
+                            </tr>
+                        </ItemTemplate>
+                        <AlternatingItemTemplate>
+                            <tr style="background-color: Yellow;">
+                                <td align="center">
+                                    <asp:Label ID="lblName" runat="server" Text='<%# Bind("Name") %>' />
+                                </td>
+                                <td align="center">
+                                    <asp:Label ID="lblMobile" runat="server" Text='<%# Bind("Mobile") %>' />
+                                </td>
+                                <td align="center">
+                                    <asp:Label ID="lblCity" runat="server" Text='<%# Bind("City") %>' />
+                                </td>
+                                <td align="center">
+                                    <asp:Label ID="lblCountry" runat="server" Text='<%# Bind("Country") %>' />
+                                </td>
+                                <td align="center">
+                                     <asp:Button ID="DeleteButton" runat="server" CommandName="Delete" Text="Delete"/>
+                                    <%--<asp:ImageButton ID="DeleteButton" runat="server" CommandName="Delete" ImageUrl="~/download.jpg"
+                                        Width="75px" />--%>
+                                    <asp:Button ID="EditButton" runat="server" CommandName="Edit" Text="Edit"/>
+                                    <%--<asp:ImageButton ID="EditButton" runat="server" CommandName="Edit" ImageUrl="~/Image/edit-icon.png"
+                                        Height="70px" />--%>
+                                </td>
+                            </tr>
+                        </AlternatingItemTemplate>
+                        <InsertItemTemplate>
+                            <tr style="">
+                                <td>
+                                    <asp:Button ID="InsertButton" runat="server" CommandName="Insert" Text="Insert"/>
+                                    <%--<asp:ImageButton ID="InsertButton" runat="server" CommandName="Insert" ImageUrl="~/Image/Submit.jpg"
+                                        Height="45px" />--%>
+                                </td>
+                                <td>
+                                    <asp:TextBox ID="txtName" runat="server" Text='<%# Bind("Name") %>' />
+                                </td>
+                                <td>
+                                    <asp:TextBox ID="txtMobile" runat="server" Text='<%# Bind("Mobile") %>' />
+                                </td>
+                                <td>
+                                    <asp:TextBox ID="txtCity" runat="server" Text='<%# Bind("City") %>' />
+                                </td>
+                                <td>
+                                    <asp:TextBox ID="txtCountry" runat="server" Text='<%# Bind("Country") %>' />
+                                </td>
+                                <td>
+                                    <asp:Button ID="btnUpdate" runat="server" Text="Update" OnClick="btnUpdate_Click"/>
+                                    <%--<asp:ImageButton ID="btnUpdate" runat="server" ImageUrl="~/Update1.jpg" OnClick="btnUpdate_Click"
+                                        Height="40px" />--%>
+                                    <asp:Button ID="CancelButton" runat="server" Text="Cancel" CommandName="Cancel"/>
+                                    <%--<asp:ImageButton ID="CancelButton" runat="server" CommandName="Cancel"
+                                            ImageUrl="~/Clear1.jpg" Height="45px" />--%>
+                                </td>
+                            </tr>
+                        </InsertItemTemplate>
+                    </asp:ListView>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+
+
+
+
+XML.ASPX.CS
+---------------------
+
+using System;
+using System.Configuration;
+using System.Data;
+using System.Linq;
+using System.Web;
+using System.Web.Security;
+using System.Web.UI;
+using System.Web.UI.HtmlControls;
+using System.Web.UI.WebControls;
+using System.Web.UI.WebControls.WebParts;
+using System.Xml.Linq;
+using System.Data;
+using System.Xml;
+
+
+namespace ElectronicsForYou
+{
+    public partial class XMLWebForm : System.Web.UI.Page
+    {
+        string xmlfile = string.Empty;
+
+        protected void Page_Load(object sender, EventArgs e)
+        {
+            if (!Page.IsPostBack)
+            {
+                xmlfile = Server.MapPath("~/bin/Empolyee.xml");
+                LoadData();
+            }
+        }
+        protected void LoadData()
+        {
+            DataSet ds = new DataSet();
+            DataTable table = new DataTable();
+
+            ds.ReadXml(xmlfile);
+            EmployeeListView.DataSource = ds;
+
+            EmployeeListView.DataBind();
+        }
+
+        protected void EmployeeListView_ItemInserting(object sender, ListViewInsertEventArgs e)
+        {
+            TextBox txtNameTextBox = (TextBox)EmployeeListView.InsertItem.FindControl("txtName");
+            TextBox txtMobileTextBox = (TextBox)EmployeeListView.InsertItem.FindControl("txtMobile");
+            TextBox txtCityTextBox = (TextBox)EmployeeListView.InsertItem.FindControl("txtCity");
+            TextBox txtCountryTextBox = (TextBox)EmployeeListView.InsertItem.FindControl("txtCountry");
+
+            XmlDocument xmlDoc = new XmlDocument();
+            xmlfile = Server.MapPath("~/bin/Empolyee.xml");
+            xmlDoc.Load(xmlfile);
+            XmlElement xelement = xmlDoc.CreateElement("Employee");
+
+            XmlElement xName = xmlDoc.CreateElement("Name");
+            xName.InnerText = txtNameTextBox.Text;
+            xelement.AppendChild(xName);
+
+            XmlElement xYear = xmlDoc.CreateElement("Mobile");
+            xYear.InnerText = txtMobileTextBox.Text;
+            xelement.AppendChild(xYear);
+            XmlElement xGenre = xmlDoc.CreateElement("City");
+            xGenre.InnerText = txtCityTextBox.Text;
+            xelement.AppendChild(xGenre);
+
+            XmlElement xCast = xmlDoc.CreateElement("Country");
+            xCast.InnerText = txtCountryTextBox.Text;
+            xelement.AppendChild(xCast);
+
+            xmlDoc.DocumentElement.AppendChild(xelement);
+            xmlDoc.Save(xmlfile);
+            LoadData();
+        }
+
+        static Int16 i = 0;
+
+        protected void EmployeeListView_ItemEditing(object sender, ListViewEditEventArgs e)
+        {
+
+            EmployeeListView.EditIndex = e.NewEditIndex;
+            i = Convert.ToInt16(EmployeeListView.EditIndex);
+
+            Label lblName = (Label)EmployeeListView.EditItem.FindControl("lblName");
+            Label lblMobile = (Label)EmployeeListView.EditItem.FindControl("lblMobile");
+            Label lblCity = (Label)EmployeeListView.EditItem.FindControl("lblCity");
+            Label lblCountry = (Label)EmployeeListView.EditItem.FindControl("lblCountry");
+
+            TextBox txtnameTextBox = (TextBox)EmployeeListView.InsertItem.FindControl("txtName");
+            TextBox txtMobileTextBox = (TextBox)EmployeeListView.InsertItem.FindControl("txtMobile");
+            TextBox txtCityTextBox = (TextBox)EmployeeListView.InsertItem.FindControl("txtCity");
+            TextBox txtCountryTextBox = (TextBox)EmployeeListView.InsertItem.FindControl("txtCountry");
+            txtnameTextBox.Text = lblName.Text;
+            txtMobileTextBox.Text = lblMobile.Text;
+            txtCityTextBox.Text = lblCity.Text;
+            txtCountryTextBox.Text = lblCountry.Text;
+        }
+
+        protected void EmployeeListView_ItemDeleting(object sender, ListViewDeleteEventArgs e)
+        {
+            Label lblName = (EmployeeListView.Items[e.ItemIndex].FindControl("lblName")) as Label;
+            Label lblMobile = (EmployeeListView.Items[e.ItemIndex].FindControl("lblMobile")) as Label;
+            Label lblCity = (EmployeeListView.Items[e.ItemIndex].FindControl("lblCity")) as Label;
+            Label lblCountry = (EmployeeListView.Items[e.ItemIndex].FindControl("lblCountry")) as Label;
+
+            XmlDocument xmlDoc = new XmlDocument();
+            xmlfile = Server.MapPath("~/bin/Empolyee.xml");
+            xmlDoc.Load(xmlfile);
+            string value = lblName.Text;
+            XmlNodeList newXMLNodes = xmlDoc.SelectNodes("/Employees/Employee");
+
+
+            foreach (XmlNode node in newXMLNodes)
+            {
+                foreach (XmlAttribute attribute in node.Attributes)
+                {
+                    if (attribute.Name == value)
+                    //if ((attribute.Name == "name") && (attribute.Value == "aaa"))
+                    {
+                        //delete.
+                        node.RemoveAll();
+                        break;
+                    }
+                }
+            }
+
+
+            //for (int i = newXMLNodes.Count - 1; i >= 0; i--)
+            //{
+            //    if (newXMLNodes.InnerText == value)
+            //    {
+            //        newXMLNodes[i].ParentNode.RemoveChild(newXMLNodes[i]);
+            //    }
+                
+            //}
+
+            //foreach (XmlNode newXMLNode in newXMLNodes)
+            //{
+            //    if (newXMLNode.InnerText == value)
+            //    {
+            //        newXMLNode.ParentNode.RemoveChild(newXMLNode);
+            //    }
+            //}
+            xmlDoc.Save(xmlfile);
+            xmlDoc = null;
+            LoadData();
+        }
+
+        protected void EmployeeListView_ItemCanceling(object sender, ListViewCancelEventArgs e)
+        {
+            TextBox txtNameTextBox = (TextBox)EmployeeListView.InsertItem.FindControl("txtName");
+            TextBox txtMobileTextBox = (TextBox)EmployeeListView.InsertItem.FindControl("txtMobile");
+            TextBox txtCityTextBox = (TextBox)EmployeeListView.InsertItem.FindControl("txtCity");
+            TextBox txtCountryTextBox = (TextBox)EmployeeListView.InsertItem.FindControl("txtCountry");
+            txtNameTextBox.Text = string.Empty;
+            txtMobileTextBox.Text = string.Empty;
+            txtCityTextBox.Text = string.Empty;
+            txtCountryTextBox.Text = string.Empty;
+        }
+        protected void btnUpdate_Click(object sender, EventArgs e)
+        {
+
+            TextBox txtNameTextBox = (TextBox)EmployeeListView.InsertItem.FindControl("txtName");
+            TextBox txtMobileTextBox = (TextBox)EmployeeListView.InsertItem.FindControl("txtMobile");
+            TextBox txtCityTextBox = (TextBox)EmployeeListView.InsertItem.FindControl("txtCity");
+            TextBox txtCountryTextBox = (TextBox)EmployeeListView.InsertItem.FindControl("txtCountry");
+
+            XmlDocument xmldoc = new XmlDocument();
+            xmlfile = Server.MapPath("~/bin/Empolyee.xml");
+            xmldoc.Load(xmlfile);
+
+            XmlNode xmlnode = xmldoc.DocumentElement.ChildNodes.Item(i);
+            xmlnode["Name"].InnerText = txtNameTextBox.Text;
+            xmlnode["Mobile"].InnerText = txtMobileTextBox.Text;
+            xmlnode["City"].InnerText = txtCityTextBox.Text;
+            xmlnode["Country"].InnerText = txtCountryTextBox.Text;
+            xmldoc.Save(xmlfile);
+            LoadData();
+        }
+    }
+}
+
+
+
