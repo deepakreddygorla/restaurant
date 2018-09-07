@@ -1,0 +1,85 @@
+
+XML
+--------
+
+
+Step:1
+ To remove the promt  window while saveing , inserting , Deleteing the file
+
+Goto Tools -> Options -> Documents ->Auto-load chande,if saved ... check that box
+
+
+
+Step:2
+Copy and past the Item Deleting Code
+
+protected void EmployeeListView_ItemDeleting(object sender, ListViewDeleteEventArgs e)
+        {
+            xmlfile = Server.MapPath("~/bin/Empolyee.xml");
+            
+            DataSet ds = new DataSet();
+
+            ds.ReadXml(xmlfile);
+
+            ds.Tables[0].Rows.RemoveAt(e.ItemIndex);
+
+            ds.WriteXml(xmlfile);
+
+            LoadData();
+        }
+
+
+
+
+Interface
+--------------
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace SampleConsoleApplication
+{
+    public interface IF1
+    {
+        void Add();
+    }
+    public interface IF2
+    {
+        void Sub();
+    }
+     public class InterfaceClass : IF1
+    {
+         public void Add()
+         {
+             int i = 10;
+             int j = 20;
+             int sum = i + j;
+
+             Console.WriteLine(sum);
+
+         }
+
+         //public void Sub()
+         //{
+         //    int i = 10;
+         //    int j = 20;
+         //    int sub = i - j;
+
+         //    Console.WriteLine(sub);
+
+         //}
+
+         public static void Main()
+        {
+            IF1 if1 = new InterfaceClass();
+            if1.Add();
+
+            //IF2 if2 = new InterfaceClass();
+            //if2.Sub();
+
+            Console.Read();
+        }
+    }
+}
